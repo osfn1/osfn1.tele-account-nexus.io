@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: '/osfn1.tele-account-nexus.io/',
+  base: mode === 'production' ? '/osfn1.tele-account-nexus.io/' : '/',
   server: {
     host: "::",
     port: 8080,
