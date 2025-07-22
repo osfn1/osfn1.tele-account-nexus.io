@@ -4,6 +4,8 @@ import { UserProfile } from '@/components/UserProfile';
 import { MainMenu } from '@/components/MainMenu';
 import { CountryCard } from '@/components/CountryCard';
 import { AccountPurchaseModal } from '@/components/AccountPurchaseModal';
+import { MyAccounts } from '@/components/MyAccounts';
+import { RechargeSystem } from '@/components/RechargeSystem';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTheme } from '@/hooks/useTheme';
 import { User, Country } from '@/types';
@@ -49,11 +51,16 @@ const Index = () => {
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   const [purchaseType, setPurchaseType] = useState<'single' | 'bulk'>('single');
+  const [user, setUser] = useState<User>(mockUser);
 
   const handleCountrySelect = (country: Country) => {
     setSelectedCountry(country);
     setPurchaseType(currentView === 'singlePurchase' ? 'single' : 'bulk');
     setIsPurchaseModalOpen(true);
+  };
+
+  const handleBalanceUpdate = (newBalance: number) => {
+    setUser(prev => ({ ...prev, balance: newBalance }));
   };
 
   const renderCurrentView = () => {
@@ -103,12 +110,9 @@ const Index = () => {
               >
                 <ArrowLeft className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
               </AnimatedButton>
-              <h2 className="text-2xl font-bold gradient-text">{t('menu.myAccounts')}</h2>
             </div>
             
-            <div className="text-center py-20">
-              <p className="text-muted-foreground">My Accounts feature coming soon...</p>
-            </div>
+            <MyAccounts />
           </div>
         );
 
@@ -124,21 +128,21 @@ const Index = () => {
               >
                 <ArrowLeft className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
               </AnimatedButton>
-              <h2 className="text-2xl font-bold gradient-text">{t('menu.recharge')}</h2>
             </div>
             
-            <div className="text-center py-20">
-              <p className="text-muted-foreground">Recharge feature coming soon...</p>
-            </div>
+            <RechargeSystem 
+              user={user} 
+              onBalanceUpdate={handleBalanceUpdate}
+            />
           </div>
         );
 
       default:
         return (
           <div className="space-y-8">
-            <UserProfile user={mockUser} />
+            <UserProfile user={user} />
             <MainMenu
-              user={mockUser}
+              user={user}
               onBuySingle={() => setCurrentView('singlePurchase')}
               onBuyBulk={() => setCurrentView('bulkPurchase')}
               onMyAccounts={() => setCurrentView('myAccounts')}
@@ -176,7 +180,7 @@ const Index = () => {
             setSelectedCountry(null);
           }}
           country={selectedCountry}
-          user={mockUser}
+          user={user}
           purchaseType={purchaseType}
         />
       )}
