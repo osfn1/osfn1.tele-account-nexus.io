@@ -54,7 +54,7 @@ const Index = () => {
   const [user, setUser] = useState<User>(mockUser);
   const [currentPage, setCurrentPage] = useState(0);
   
-  const COUNTRIES_PER_PAGE = 20;
+  const COUNTRIES_PER_PAGE = 2;
   const COUNTRIES_PER_ROW = 2;
 
   const handleCountrySelect = (country: Country) => {

@@ -38,9 +38,11 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
   purchaseType
 }) => {
   const { t } = useTranslation();
-  const [step, setStep] = useState<'confirm' | 'quantity' | 'processing' | 'code' | 'success'>('confirm');
+  const [step, setStep] = useState<'confirm' | 'quantity' | 'dataType' | 'processing' | 'code' | 'success'>('confirm');
   const [quantity, setQuantity] = useState(1);
+  const [dataType, setDataType] = useState<'sessions' | 'tdata'>('sessions');
   const [verificationCode, setVerificationCode] = useState('');
+  const [twoFactorAuth, setTwoFactorAuth] = useState('');
   const [purchasedAccount, setPurchasedAccount] = useState<any>(null);
 
   const handleConfirmPurchase = () => {
@@ -62,6 +64,11 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
 
   const handleQuantitySelect = (qty: number) => {
     setQuantity(qty);
+    setStep('dataType');
+  };
+
+  const handleDataTypeSelect = (type: 'sessions' | 'tdata') => {
+    setDataType(type);
     setStep('processing');
     // Simulate bulk purchase
     setTimeout(() => {
@@ -92,25 +99,41 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
   };
 
   const handleDownloadFile = () => {
-    const accounts = Array.from({ length: quantity }, (_, i) => ({
-      phoneNumber: `${country.phonePrefix}50${(1234567 + i).toString()}`,
-      sessionData: `session_data_${i + 1}`,
-      twoFactorPassword: `pass_${i + 1}`,
-      status: 'active'
-    }));
+    const accounts = Array.from({ length: quantity }, (_, i) => {
+      const baseAccount = {
+        phoneNumber: `${country.phonePrefix}50${(1234567 + i).toString()}`,
+        status: 'active',
+        verificationCode: `${Math.floor(10000 + Math.random() * 90000)}`,
+        twoFactorPassword: `auth_pass_${i + 1}`
+      };
+
+      if (dataType === 'sessions') {
+        return {
+          ...baseAccount,
+          sessionData: `session_data_${i + 1}_${Date.now()}`,
+          sessionString: `1BJWap1aBBNRXx-O_${i + 1}_session_string`
+        };
+      } else {
+        return {
+          ...baseAccount,
+          tdataFile: `tdata_${i + 1}.zip`,
+          tdataPath: `/accounts/tdata/account_${i + 1}/`
+        };
+      }
+    });
 
     const jsonData = JSON.stringify(accounts, null, 2);
     const blob = new Blob([jsonData], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `${country.name}_accounts_${quantity}.json`;
+    a.download = `${country.name}_${dataType}_${quantity}.json`;
     a.click();
     URL.revokeObjectURL(url);
 
     toast({
       title: "تم التحميل",
-      description: `تم تحميل ${quantity} حساب بنجاح`
+      description: `تم تحميل ${quantity} حساب من نوع ${dataType === 'sessions' ? 'Sessions' : 'TData'} بنجاح`
     });
   };
 
@@ -206,6 +229,44 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
           </div>
         );
 
+      case 'dataType':
+        return (
+          <div className="space-y-6">
+            <div className="text-center">
+              <h3 className="text-lg font-semibold mb-2">اختر نوع البيانات</h3>
+              <p className="text-muted-foreground">اختر نوع البيانات التي تريد الحصول عليها</p>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4">
+              <Card 
+                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 border-primary/20"
+                onClick={() => handleDataTypeSelect('sessions')}
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 mx-auto bg-gradient-primary rounded-full flex items-center justify-center mb-4">
+                    <Shield className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-lg font-bold gradient-text">Sessions</div>
+                  <div className="text-sm text-muted-foreground mt-2">بيانات الجلسة الآمنة</div>
+                </CardContent>
+              </Card>
+              
+              <Card 
+                className="cursor-pointer hover:shadow-lg transition-all duration-300 hover:scale-105 border-secondary/20"
+                onClick={() => handleDataTypeSelect('tdata')}
+              >
+                <CardContent className="p-6 text-center">
+                  <div className="w-12 h-12 mx-auto bg-gradient-secondary rounded-full flex items-center justify-center mb-4">
+                    <FileText className="w-6 h-6 text-white" />
+                  </div>
+                  <div className="text-lg font-bold gradient-text">TData</div>
+                  <div className="text-sm text-muted-foreground mt-2">ملفات البيانات المضغوطة</div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        );
+
       case 'processing':
         return (
           <div className="text-center space-y-6 py-8">
@@ -252,20 +313,39 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
                   </div>
                   
                   {purchasedAccount?.verificationCode ? (
-                    <div className="flex items-center justify-between p-3 bg-success/10 rounded-lg border border-success/20">
-                      <div className="flex items-center space-x-2">
-                        <Lock className="w-4 h-4 text-success" />
-                        <span className="text-sm">{t('account.verificationCode')}:</span>
+                    <div className="space-y-3">
+                      <div className="flex items-center justify-between p-3 bg-success/10 rounded-lg border border-success/20">
+                        <div className="flex items-center space-x-2">
+                          <Lock className="w-4 h-4 text-success" />
+                          <span className="text-sm">كود التحقق:</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <code className="text-lg font-mono font-bold text-success">{purchasedAccount.verificationCode}</code>
+                          <AnimatedButton 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => handleCopyToClipboard(purchasedAccount.verificationCode, 'كود التحقق')}
+                          >
+                            <Copy className="w-4 h-4" />
+                          </AnimatedButton>
+                        </div>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <code className="text-lg font-mono font-bold text-success">{purchasedAccount.verificationCode}</code>
-                        <AnimatedButton 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={() => handleCopyToClipboard(purchasedAccount.verificationCode, 'كود التحقق')}
-                        >
-                          <Copy className="w-4 h-4" />
-                        </AnimatedButton>
+                      
+                      <div className="flex items-center justify-between p-3 bg-secondary/10 rounded-lg border border-secondary/20">
+                        <div className="flex items-center space-x-2">
+                          <Shield className="w-4 h-4 text-secondary" />
+                          <span className="text-sm">التحقق الثنائي:</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <code className="text-lg font-mono font-bold text-secondary">auth_pass_123</code>
+                          <AnimatedButton 
+                            variant="ghost" 
+                            size="sm"
+                            onClick={() => handleCopyToClipboard('auth_pass_123', 'كلمة مرور التحقق الثنائي')}
+                          >
+                            <Copy className="w-4 h-4" />
+                          </AnimatedButton>
+                        </div>
                       </div>
                     </div>
                   ) : (
