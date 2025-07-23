@@ -52,6 +52,10 @@ const Index = () => {
   const [isPurchaseModalOpen, setIsPurchaseModalOpen] = useState(false);
   const [purchaseType, setPurchaseType] = useState<'single' | 'bulk'>('single');
   const [user, setUser] = useState<User>(mockUser);
+  const [currentPage, setCurrentPage] = useState(0);
+  
+  const COUNTRIES_PER_PAGE = 20;
+  const COUNTRIES_PER_ROW = 2;
 
   const handleCountrySelect = (country: Country) => {
     setSelectedCountry(country);
@@ -61,6 +65,22 @@ const Index = () => {
 
   const handleBalanceUpdate = (newBalance: number) => {
     setUser(prev => ({ ...prev, balance: newBalance }));
+  };
+
+  const totalPages = Math.ceil(mockCountries.length / COUNTRIES_PER_PAGE);
+  const startIndex = currentPage * COUNTRIES_PER_PAGE;
+  const currentCountries = mockCountries.slice(startIndex, startIndex + COUNTRIES_PER_PAGE);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
   const renderCurrentView = () => {
@@ -86,14 +106,46 @@ const Index = () => {
               </div>
             </div>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {mockCountries.map((country) => (
+            {/* Countries Grid - 2 columns per row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {currentCountries.map((country) => (
                 <CountryCard
                   key={country.id}
                   country={country}
                   onSelect={handleCountrySelect}
                 />
               ))}
+            </div>
+
+            {/* Pagination Controls */}
+            <div className="flex items-center justify-between mt-8">
+              <AnimatedButton
+                variant="outline"
+                onClick={handlePrevPage}
+                disabled={currentPage === 0}
+                animation="scale"
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
+                السابق
+              </AnimatedButton>
+
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">
+                  الصفحة {currentPage + 1} من {totalPages}
+                </span>
+              </div>
+
+              <AnimatedButton
+                variant="outline"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages - 1}
+                animation="scale"
+                className="flex items-center gap-2"
+              >
+                التالي
+                <ArrowLeft className={`w-4 h-4 ${isRTL ? '' : 'rotate-180'}`} />
+              </AnimatedButton>
             </div>
           </div>
         );

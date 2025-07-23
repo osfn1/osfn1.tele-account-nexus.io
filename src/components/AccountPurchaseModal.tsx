@@ -5,7 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { AnimatedButton } from '@/components/AnimatedButton';
+import { CodeVerificationSystem } from '@/components/CodeVerificationSystem';
 import { useTranslation } from '@/hooks/useTranslation';
+import { toast } from '@/hooks/use-toast';
 import { Country, User } from '@/types';
 import { 
   Shield, 
@@ -16,7 +18,8 @@ import {
   AlertTriangle,
   CheckCircle,
   Copy,
-  Download
+  Download,
+  FileText
 } from 'lucide-react';
 
 interface AccountPurchaseModalProps {
@@ -73,7 +76,42 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
         ...prev,
         verificationCode: '54821'
       }));
+      toast({
+        title: "تم استلام الكود",
+        description: "تم استلام كود التحقق بنجاح"
+      });
     }, 1500);
+  };
+
+  const handleCopyToClipboard = (text: string, type: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "تم النسخ",
+      description: `تم نسخ ${type} إلى الحافظة`
+    });
+  };
+
+  const handleDownloadFile = () => {
+    const accounts = Array.from({ length: quantity }, (_, i) => ({
+      phoneNumber: `${country.phonePrefix}50${(1234567 + i).toString()}`,
+      sessionData: `session_data_${i + 1}`,
+      twoFactorPassword: `pass_${i + 1}`,
+      status: 'active'
+    }));
+
+    const jsonData = JSON.stringify(accounts, null, 2);
+    const blob = new Blob([jsonData], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${country.name}_accounts_${quantity}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+
+    toast({
+      title: "تم التحميل",
+      description: `تم تحميل ${quantity} حساب بنجاح`
+    });
   };
 
   const renderStep = () => {
@@ -203,7 +241,11 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
                     </div>
                     <div className="flex items-center space-x-2">
                       <code className="text-sm font-mono">{purchasedAccount?.phoneNumber}</code>
-                      <AnimatedButton variant="ghost" size="sm">
+                      <AnimatedButton 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={() => handleCopyToClipboard(purchasedAccount?.phoneNumber, 'رقم الهاتف')}
+                      >
                         <Copy className="w-4 h-4" />
                       </AnimatedButton>
                     </div>
@@ -217,7 +259,11 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
                       </div>
                       <div className="flex items-center space-x-2">
                         <code className="text-lg font-mono font-bold text-success">{purchasedAccount.verificationCode}</code>
-                        <AnimatedButton variant="ghost" size="sm">
+                        <AnimatedButton 
+                          variant="ghost" 
+                          size="sm"
+                          onClick={() => handleCopyToClipboard(purchasedAccount.verificationCode, 'كود التحقق')}
+                        >
                           <Copy className="w-4 h-4" />
                         </AnimatedButton>
                       </div>
@@ -256,9 +302,14 @@ export const AccountPurchaseModal: React.FC<AccountPurchaseModalProps> = ({
             </div>
             
             {purchaseType === 'bulk' && (
-              <AnimatedButton variant="primary" animation="glow" className="w-full">
+              <AnimatedButton 
+                variant="primary" 
+                animation="glow" 
+                className="w-full"
+                onClick={handleDownloadFile}
+              >
                 <Download className="w-4 h-4 mr-2" />
-                {t('purchase.downloadFile')}
+                تحميل الملف
               </AnimatedButton>
             )}
           </div>
