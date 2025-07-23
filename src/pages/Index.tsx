@@ -28,18 +28,125 @@ const mockUser: User = {
 };
 
 const mockCountries: Country[] = [
+  // المنطقة العربية
   { id: '1', code: 'SA', name: 'السعودية', flag: '🇸🇦', phonePrefix: '+966', price: 2.50, available: 25, isActive: true },
-  { id: '2', code: 'US', name: 'United States', flag: '🇺🇸', phonePrefix: '+1', price: 1.80, available: 50, isActive: true },
-  { id: '3', code: 'GB', name: 'United Kingdom', flag: '🇬🇧', phonePrefix: '+44', price: 2.20, available: 30, isActive: true },
-  { id: '4', code: 'DE', name: 'Germany', flag: '🇩🇪', phonePrefix: '+49', price: 2.00, available: 40, isActive: true },
-  { id: '5', code: 'FR', name: 'France', flag: '🇫🇷', phonePrefix: '+33', price: 1.90, available: 35, isActive: true },
-  { id: '6', code: 'CN', name: '中国', flag: '🇨🇳', phonePrefix: '+86', price: 3.00, available: 20, isActive: true },
-  { id: '7', code: 'RU', name: 'Россия', flag: '🇷🇺', phonePrefix: '+7', price: 1.50, available: 45, isActive: true },
-  { id: '8', code: 'KR', name: '대한민국', flag: '🇰🇷', phonePrefix: '+82', price: 2.80, available: 15, isActive: true },
-  { id: '9', code: 'JP', name: '日本', flag: '🇯🇵', phonePrefix: '+81', price: 3.50, available: 10, isActive: true },
-  { id: '10', code: 'AE', name: 'الإمارات', flag: '🇦🇪', phonePrefix: '+971', price: 2.30, available: 28, isActive: true },
-  { id: '11', code: 'EG', name: 'مصر', flag: '🇪🇬', phonePrefix: '+20', price: 1.20, available: 60, isActive: true },
-  { id: '12', code: 'TR', name: 'Türkiye', flag: '🇹🇷', phonePrefix: '+90', price: 1.40, available: 55, isActive: true }
+  { id: '2', code: 'AE', name: 'الإمارات', flag: '🇦🇪', phonePrefix: '+971', price: 2.30, available: 28, isActive: true },
+  { id: '3', code: 'EG', name: 'مصر', flag: '🇪🇬', phonePrefix: '+20', price: 1.20, available: 60, isActive: true },
+  { id: '4', code: 'QA', name: 'قطر', flag: '🇶🇦', phonePrefix: '+974', price: 2.80, available: 15, isActive: true },
+  { id: '5', code: 'KW', name: 'الكويت', flag: '🇰🇼', phonePrefix: '+965', price: 2.40, available: 22, isActive: true },
+  { id: '6', code: 'BH', name: 'البحرين', flag: '🇧🇭', phonePrefix: '+973', price: 2.20, available: 18, isActive: true },
+  { id: '7', code: 'OM', name: 'عمان', flag: '🇴🇲', phonePrefix: '+968', price: 2.10, available: 20, isActive: true },
+  { id: '8', code: 'JO', name: 'الأردن', flag: '🇯🇴', phonePrefix: '+962', price: 1.80, available: 35, isActive: true },
+  { id: '9', code: 'LB', name: 'لبنان', flag: '🇱🇧', phonePrefix: '+961', price: 1.70, available: 30, isActive: true },
+  { id: '10', code: 'SY', name: 'سوريا', flag: '🇸🇾', phonePrefix: '+963', price: 1.50, available: 25, isActive: true },
+
+  // أوروبا
+  { id: '11', code: 'US', name: 'United States', flag: '🇺🇸', phonePrefix: '+1', price: 1.80, available: 50, isActive: true },
+  { id: '12', code: 'GB', name: 'United Kingdom', flag: '🇬🇧', phonePrefix: '+44', price: 2.20, available: 30, isActive: true },
+  { id: '13', code: 'DE', name: 'Germany', flag: '🇩🇪', phonePrefix: '+49', price: 2.00, available: 40, isActive: true },
+  { id: '14', code: 'FR', name: 'France', flag: '🇫🇷', phonePrefix: '+33', price: 1.90, available: 35, isActive: true },
+  { id: '15', code: 'IT', name: 'Italy', flag: '🇮🇹', phonePrefix: '+39', price: 1.85, available: 32, isActive: true },
+  { id: '16', code: 'ES', name: 'Spain', flag: '🇪🇸', phonePrefix: '+34', price: 1.75, available: 38, isActive: true },
+  { id: '17', code: 'NL', name: 'Netherlands', flag: '🇳🇱', phonePrefix: '+31', price: 2.10, available: 25, isActive: true },
+  { id: '18', code: 'CH', name: 'Switzerland', flag: '🇨🇭', phonePrefix: '+41', price: 3.20, available: 12, isActive: true },
+  { id: '19', code: 'AT', name: 'Austria', flag: '🇦🇹', phonePrefix: '+43', price: 2.30, available: 20, isActive: true },
+  { id: '20', code: 'BE', name: 'Belgium', flag: '🇧🇪', phonePrefix: '+32', price: 2.00, available: 22, isActive: true },
+
+  // آسيا
+  { id: '21', code: 'CN', name: '中国', flag: '🇨🇳', phonePrefix: '+86', price: 3.00, available: 20, isActive: true },
+  { id: '22', code: 'JP', name: '日本', flag: '🇯🇵', phonePrefix: '+81', price: 3.50, available: 10, isActive: true },
+  { id: '23', code: 'KR', name: '대한민국', flag: '🇰🇷', phonePrefix: '+82', price: 2.80, available: 15, isActive: true },
+  { id: '24', code: 'IN', name: 'India', flag: '🇮🇳', phonePrefix: '+91', price: 1.30, available: 80, isActive: true },
+  { id: '25', code: 'TH', name: 'Thailand', flag: '🇹🇭', phonePrefix: '+66', price: 1.60, available: 45, isActive: true },
+  { id: '26', code: 'SG', name: 'Singapore', flag: '🇸🇬', phonePrefix: '+65', price: 2.90, available: 18, isActive: true },
+  { id: '27', code: 'MY', name: 'Malaysia', flag: '🇲🇾', phonePrefix: '+60', price: 1.70, available: 40, isActive: true },
+  { id: '28', code: 'PH', name: 'Philippines', flag: '🇵🇭', phonePrefix: '+63', price: 1.50, available: 50, isActive: true },
+  { id: '29', code: 'VN', name: 'Vietnam', flag: '🇻🇳', phonePrefix: '+84', price: 1.40, available: 55, isActive: true },
+  { id: '30', code: 'ID', name: 'Indonesia', flag: '🇮🇩', phonePrefix: '+62', price: 1.35, available: 60, isActive: true },
+
+  // روسيا وآسيا الوسطى
+  { id: '31', code: 'RU', name: 'Россия', flag: '🇷🇺', phonePrefix: '+7', price: 1.50, available: 45, isActive: true },
+  { id: '32', code: 'TR', name: 'Türkiye', flag: '🇹🇷', phonePrefix: '+90', price: 1.40, available: 55, isActive: true },
+  { id: '33', code: 'KZ', name: 'Kazakhstan', flag: '🇰🇿', phonePrefix: '+7', price: 1.30, available: 35, isActive: true },
+  { id: '34', code: 'UZ', name: 'Uzbekistan', flag: '🇺🇿', phonePrefix: '+998', price: 1.20, available: 40, isActive: true },
+  { id: '35', code: 'GE', name: 'Georgia', flag: '🇬🇪', phonePrefix: '+995', price: 1.60, available: 25, isActive: true },
+  { id: '36', code: 'AM', name: 'Armenia', flag: '🇦🇲', phonePrefix: '+374', price: 1.70, available: 20, isActive: true },
+  { id: '37', code: 'AZ', name: 'Azerbaijan', flag: '🇦🇿', phonePrefix: '+994', price: 1.65, available: 22, isActive: true },
+  { id: '38', code: 'BY', name: 'Belarus', flag: '🇧🇾', phonePrefix: '+375', price: 1.55, available: 30, isActive: true },
+  { id: '39', code: 'UA', name: 'Ukraine', flag: '🇺🇦', phonePrefix: '+380', price: 1.45, available: 35, isActive: true },
+  { id: '40', code: 'MD', name: 'Moldova', flag: '🇲🇩', phonePrefix: '+373', price: 1.40, available: 25, isActive: true },
+
+  // أفريقيا
+  { id: '41', code: 'ZA', name: 'South Africa', flag: '🇿🇦', phonePrefix: '+27', price: 1.60, available: 30, isActive: true },
+  { id: '42', code: 'NG', name: 'Nigeria', flag: '🇳🇬', phonePrefix: '+234', price: 1.30, available: 50, isActive: true },
+  { id: '43', code: 'KE', name: 'Kenya', flag: '🇰🇪', phonePrefix: '+254', price: 1.25, available: 45, isActive: true },
+  { id: '44', code: 'GH', name: 'Ghana', flag: '🇬🇭', phonePrefix: '+233', price: 1.35, available: 40, isActive: true },
+  { id: '45', code: 'ET', name: 'Ethiopia', flag: '🇪🇹', phonePrefix: '+251', price: 1.20, available: 35, isActive: true },
+  { id: '46', code: 'MA', name: 'Morocco', flag: '🇲🇦', phonePrefix: '+212', price: 1.50, available: 30, isActive: true },
+  { id: '47', code: 'TN', name: 'Tunisia', flag: '🇹🇳', phonePrefix: '+216', price: 1.40, available: 25, isActive: true },
+  { id: '48', code: 'DZ', name: 'Algeria', flag: '🇩🇿', phonePrefix: '+213', price: 1.45, available: 28, isActive: true },
+  { id: '49', code: 'LY', name: 'Libya', flag: '🇱🇾', phonePrefix: '+218', price: 1.55, available: 20, isActive: true },
+  { id: '50', code: 'SD', name: 'Sudan', flag: '🇸🇩', phonePrefix: '+249', price: 1.30, available: 25, isActive: true },
+
+  // أمريكا الشمالية وكندا
+  { id: '51', code: 'CA', name: 'Canada', flag: '🇨🇦', phonePrefix: '+1', price: 1.85, available: 40, isActive: true },
+  { id: '52', code: 'MX', name: 'Mexico', flag: '🇲🇽', phonePrefix: '+52', price: 1.50, available: 45, isActive: true },
+  { id: '53', code: 'GT', name: 'Guatemala', flag: '🇬🇹', phonePrefix: '+502', price: 1.40, available: 25, isActive: true },
+  { id: '54', code: 'HN', name: 'Honduras', flag: '🇭🇳', phonePrefix: '+504', price: 1.35, available: 20, isActive: true },
+  { id: '55', code: 'SV', name: 'El Salvador', flag: '🇸🇻', phonePrefix: '+503', price: 1.45, available: 18, isActive: true },
+  { id: '56', code: 'NI', name: 'Nicaragua', flag: '🇳🇮', phonePrefix: '+505', price: 1.40, available: 15, isActive: true },
+  { id: '57', code: 'CR', name: 'Costa Rica', flag: '🇨🇷', phonePrefix: '+506', price: 1.65, available: 22, isActive: true },
+  { id: '58', code: 'PA', name: 'Panama', flag: '🇵🇦', phonePrefix: '+507', price: 1.70, available: 20, isActive: true },
+  { id: '59', code: 'DO', name: 'Dominican Republic', flag: '🇩🇴', phonePrefix: '+1', price: 1.55, available: 25, isActive: true },
+  { id: '60', code: 'CU', name: 'Cuba', flag: '🇨🇺', phonePrefix: '+53', price: 1.80, available: 15, isActive: true },
+
+  // أمريكا الجنوبية
+  { id: '61', code: 'BR', name: 'Brazil', flag: '🇧🇷', phonePrefix: '+55', price: 1.60, available: 50, isActive: true },
+  { id: '62', code: 'AR', name: 'Argentina', flag: '🇦🇷', phonePrefix: '+54', price: 1.70, available: 35, isActive: true },
+  { id: '63', code: 'CL', name: 'Chile', flag: '🇨🇱', phonePrefix: '+56', price: 1.80, available: 30, isActive: true },
+  { id: '64', code: 'CO', name: 'Colombia', flag: '🇨🇴', phonePrefix: '+57', price: 1.50, available: 40, isActive: true },
+  { id: '65', code: 'PE', name: 'Peru', flag: '🇵🇪', phonePrefix: '+51', price: 1.45, available: 35, isActive: true },
+  { id: '66', code: 'VE', name: 'Venezuela', flag: '🇻🇪', phonePrefix: '+58', price: 1.40, available: 30, isActive: true },
+  { id: '67', code: 'EC', name: 'Ecuador', flag: '🇪🇨', phonePrefix: '+593', price: 1.50, available: 25, isActive: true },
+  { id: '68', code: 'BO', name: 'Bolivia', flag: '🇧🇴', phonePrefix: '+591', price: 1.35, available: 20, isActive: true },
+  { id: '69', code: 'PY', name: 'Paraguay', flag: '🇵🇾', phonePrefix: '+595', price: 1.40, available: 18, isActive: true },
+  { id: '70', code: 'UY', name: 'Uruguay', flag: '🇺🇾', phonePrefix: '+598', price: 1.75, available: 15, isActive: true },
+
+  // أوروبا الشرقية
+  { id: '71', code: 'PL', name: 'Poland', flag: '🇵🇱', phonePrefix: '+48', price: 1.80, available: 35, isActive: true },
+  { id: '72', code: 'CZ', name: 'Czech Republic', flag: '🇨🇿', phonePrefix: '+420', price: 1.90, available: 25, isActive: true },
+  { id: '73', code: 'SK', name: 'Slovakia', flag: '🇸🇰', phonePrefix: '+421', price: 1.85, available: 20, isActive: true },
+  { id: '74', code: 'HU', name: 'Hungary', flag: '🇭🇺', phonePrefix: '+36', price: 1.95, available: 22, isActive: true },
+  { id: '75', code: 'RO', name: 'Romania', flag: '🇷🇴', phonePrefix: '+40', price: 1.70, available: 30, isActive: true },
+  { id: '76', code: 'BG', name: 'Bulgaria', flag: '🇧🇬', phonePrefix: '+359', price: 1.65, available: 25, isActive: true },
+  { id: '77', code: 'HR', name: 'Croatia', flag: '🇭🇷', phonePrefix: '+385', price: 1.90, available: 18, isActive: true },
+  { id: '78', code: 'RS', name: 'Serbia', flag: '🇷🇸', phonePrefix: '+381', price: 1.60, available: 22, isActive: true },
+  { id: '79', code: 'SI', name: 'Slovenia', flag: '🇸🇮', phonePrefix: '+386', price: 2.00, available: 15, isActive: true },
+  { id: '80', code: 'BA', name: 'Bosnia and Herzegovina', flag: '🇧🇦', phonePrefix: '+387', price: 1.75, available: 20, isActive: true },
+
+  // دول الشمال
+  { id: '81', code: 'SE', name: 'Sweden', flag: '🇸🇪', phonePrefix: '+46', price: 2.40, available: 25, isActive: true },
+  { id: '82', code: 'NO', name: 'Norway', flag: '🇳🇴', phonePrefix: '+47', price: 2.80, available: 18, isActive: true },
+  { id: '83', code: 'DK', name: 'Denmark', flag: '🇩🇰', phonePrefix: '+45', price: 2.50, available: 20, isActive: true },
+  { id: '84', code: 'FI', name: 'Finland', flag: '🇫🇮', phonePrefix: '+358', price: 2.30, available: 22, isActive: true },
+  { id: '85', code: 'IS', name: 'Iceland', flag: '🇮🇸', phonePrefix: '+354', price: 3.00, available: 8, isActive: true },
+  { id: '86', code: 'IE', name: 'Ireland', flag: '🇮🇪', phonePrefix: '+353', price: 2.20, available: 25, isActive: true },
+  { id: '87', code: 'PT', name: 'Portugal', flag: '🇵🇹', phonePrefix: '+351', price: 1.80, available: 30, isActive: true },
+  { id: '88', code: 'GR', name: 'Greece', flag: '🇬🇷', phonePrefix: '+30', price: 1.85, available: 28, isActive: true },
+  { id: '89', code: 'CY', name: 'Cyprus', flag: '🇨🇾', phonePrefix: '+357', price: 2.10, available: 15, isActive: true },
+  { id: '90', code: 'MT', name: 'Malta', flag: '🇲🇹', phonePrefix: '+356', price: 2.50, available: 10, isActive: true },
+
+  // دول أخرى
+  { id: '91', code: 'AU', name: 'Australia', flag: '🇦🇺', phonePrefix: '+61', price: 2.60, available: 30, isActive: true },
+  { id: '92', code: 'NZ', name: 'New Zealand', flag: '🇳🇿', phonePrefix: '+64', price: 2.70, available: 18, isActive: true },
+  { id: '93', code: 'IL', name: 'Israel', flag: '🇮🇱', phonePrefix: '+972', price: 2.20, available: 20, isActive: true },
+  { id: '94', code: 'IR', name: 'Iran', flag: '🇮🇷', phonePrefix: '+98', price: 1.60, available: 25, isActive: true },
+  { id: '95', code: 'PK', name: 'Pakistan', flag: '🇵🇰', phonePrefix: '+92', price: 1.25, available: 45, isActive: true },
+  { id: '96', code: 'BD', name: 'Bangladesh', flag: '🇧🇩', phonePrefix: '+880', price: 1.20, available: 50, isActive: true },
+  { id: '97', code: 'LK', name: 'Sri Lanka', flag: '🇱🇰', phonePrefix: '+94', price: 1.40, available: 35, isActive: true },
+  { id: '98', code: 'NP', name: 'Nepal', flag: '🇳🇵', phonePrefix: '+977', price: 1.30, available: 30, isActive: true },
+  { id: '99', code: 'AF', name: 'Afghanistan', flag: '🇦🇫', phonePrefix: '+93', price: 1.15, available: 25, isActive: true },
+  { id: '100', code: 'IQ', name: 'العراق', flag: '🇮🇶', phonePrefix: '+964', price: 1.50, available: 30, isActive: true }
 ];
 
 type ViewType = 'main' | 'singlePurchase' | 'bulkPurchase' | 'myAccounts' | 'recharge';
@@ -54,7 +161,7 @@ const Index = () => {
   const [user, setUser] = useState<User>(mockUser);
   const [currentPage, setCurrentPage] = useState(0);
   
-  const COUNTRIES_PER_PAGE = 2;
+  const COUNTRIES_PER_PAGE = 20;
   const COUNTRIES_PER_ROW = 2;
 
   const handleCountrySelect = (country: Country) => {
